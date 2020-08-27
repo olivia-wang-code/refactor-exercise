@@ -1,4 +1,4 @@
-function statement (invoice, plays) {
+function statement(invoice, plays) {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
@@ -9,12 +9,8 @@ function statement (invoice, plays) {
   }).format;
   for (let perf of invoice.performances) {
     const play = plays[perf.playID];
-    let thisAmount = caculateThisAmount(perf,play);
-    // add volume credits
-    volumeCredits += Math.max(perf.audience - 30, 0);
-    // add extra credit for every ten comedy attendees
-    if ('comedy' === play.type) volumeCredits += Math.floor(perf.audience / 5);
-    //print line for this order
+    let thisAmount = caculateThisAmount(perf, play);
+    volumeCredits = calulateVolumeCredits(volumeCredits, perf, play);
     result += ` ${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
     totalAmount += thisAmount;
   }
@@ -23,7 +19,7 @@ function statement (invoice, plays) {
   return result;
 }
 
-function caculateThisAmount (perf ,play) {
+function caculateThisAmount(perf, play) {
   let thisAmount = 0;
   switch (play.type) {
     case 'tragedy':
@@ -43,6 +39,15 @@ function caculateThisAmount (perf ,play) {
       throw new Error(`unknown type: ${play.type}`);
   }
 }
+
+function calulateVolumeCredits(volumeCredits, perf, play) {
+  let result = volumeCredits + Math.max(perf.audience - 30, 0);
+  if ('comedy' === play.type) {
+    result += Math.floor(perf.audience / 5);
+  }
+  return result;
+}
+
 
 module.exports = {
   statement,
