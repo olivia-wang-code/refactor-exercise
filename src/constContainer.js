@@ -1,9 +1,9 @@
-const TRAGEDY='tragedy'
-const COMEDY='comedy'
+const TRAGEDY = 'tragedy'
+const COMEDY = 'comedy'
 
-const playType ={
+const playType = {
     TRAGEDY,
     COMEDY
 }
 
-module.exports = {playType}
+module.exports = { playType }
